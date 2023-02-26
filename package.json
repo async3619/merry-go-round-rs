@@ -11,7 +11,6 @@
     "devDependencies": {
         "@napi-rs/cli": "^2.14.8",
         "@types/jest": "^29.4.0",
-        "ava": "^5.1.1",
         "jest": "^29.4.3",
         "prettier": "^2.8.4",
         "ts-jest": "^29.0.5",
@@ -27,8 +26,8 @@
         "artifacts": "napi artifacts",
         "build": "napi build --platform --release",
         "build:debug": "napi build --platform",
+        "test": "jest ./__test__",
         "prepublishOnly": "napi prepublish -t npm",
-        "test": "ava",
         "universal": "napi universal",
         "version": "napi version"
     },
