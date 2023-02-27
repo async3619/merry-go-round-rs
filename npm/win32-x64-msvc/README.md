@@ -1,3 +1,3 @@
-# `merry-go-round-win32-x64-msvc`
+# `@async3619/merry-go-round-win32-x64-msvc`
 
-This is the **x86_64-pc-windows-msvc** binary for `merry-go-round`
+This is the **x86_64-pc-windows-msvc** binary for `@async3619/merry-go-round`
