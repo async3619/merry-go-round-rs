@@ -197,5 +197,3 @@ Cargo.lock
 *.node
 
 /.idea
-/index.d.ts
-/index.js
