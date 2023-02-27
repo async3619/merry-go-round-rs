@@ -8,8 +8,13 @@ use std::fs::{OpenOptions};
 use std::io::{Cursor, Write};
 use std::path::Path;
 use id3::{Tag, TagLike, Version};
-use napi::{Error, Result};
-use napi::bindgen_prelude::Buffer;
+use id3::frame::Picture;
+use napi::{Error, Result, bindgen_prelude::*};
+use crate::album_art::AlbumArt;
+use crate::album_art_type::AlbumArtType;
+
+mod album_art;
+mod album_art_type;
 
 #[napi]
 pub struct Audio {
@@ -39,7 +44,6 @@ impl Audio {
             buffer,
         })
     }
-
     #[napi(factory)]
     pub fn from_buffer(buffer: Buffer) -> Result<Self> {
         // convert JsBuffer to Vec<u8>
@@ -123,6 +127,24 @@ impl Audio {
     }
 
     #[napi]
+    pub fn album_arts(&self) -> Vec<AlbumArt> {
+        self.tag.pictures().map(|pic| AlbumArt::new(pic)).collect::<Vec<_>>()
+    }
+    #[napi]
+    pub fn add_album_art(&mut self, album_art: &AlbumArt) {
+        self.tag.add_frame(Picture {
+            mime_type: album_art.get_mime_type(),
+            picture_type: album_art.get_type().into(),
+            description: album_art.get_description(),
+            data: album_art.data().into(),
+        });
+    }
+    #[napi]
+    pub fn remove_album_art(&mut self, album_art_type: AlbumArtType) {
+        self.tag.remove_picture_by_type(album_art_type.into());
+    }
+
+    #[napi]
     pub fn buffer(&self) -> Result<Buffer> {
         let buffer = self.buffer.clone();
         let mut file = Cursor::new(buffer);
@@ -134,7 +156,6 @@ impl Audio {
         // convert file to JsBuffer
         Ok(Buffer::from(file.into_inner()))
     }
-
     #[napi]
     pub fn save(&self, path: String) -> Result<()> {
         let path = Path::new(&path);

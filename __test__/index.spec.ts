@@ -1,5 +1,5 @@
 import * as path from "path";
-import { Audio } from "..";
+import { AlbumArt, AlbumArtType, Audio } from "..";
 import * as fs from "fs";
 
 describe("Audio", () => {
@@ -50,6 +50,9 @@ describe("Audio", () => {
     it("should get the album artist", () => {
         expect(audio.albumArtist).toBe("Mocked Artist");
     });
+    it("should get the album arts", () => {
+        expect(audio.albumArts()).toHaveLength(2);
+    });
 
     it("should set the title", () => {
         audio.title = "new title";
@@ -84,18 +87,43 @@ describe("Audio", () => {
         expect(audio.albumArtist).toBe("new album artist");
     });
 
-    it("should be able to save as buffer", () => {
-        audio.title = "New Title";
-        const buffer = audio.buffer();
+    it("should add an album art", () => {
+        const albumArt = AlbumArt.fromFile(path.join(__dirname, "__mock__", "Lenna.jpg"));
+        albumArt.type = AlbumArtType.Band;
 
+        audio.addAlbumArt(albumArt);
+
+        expect(audio.albumArts()).toHaveLength(3);
+    });
+    it("should remove an album art", () => {
+        const albumArt = audio.albumArts()[0];
+        audio.removeAlbumArt(albumArt.type);
+
+        expect(audio.albumArts()).toHaveLength(1);
+    });
+
+    it("should be able to save as buffer", () => {
+        const albumArt = AlbumArt.fromFile(path.join(__dirname, "__mock__", "Lenna.jpg"));
+        albumArt.type = AlbumArtType.Band;
+
+        audio.title = "New Title";
+        audio.addAlbumArt(albumArt);
+        audio.save(path.join(__dirname, "__mock__", "mock2.mp3"));
+
+        const buffer = audio.buffer();
         const newAudio = Audio.fromBuffer(buffer);
         expect(newAudio.title).toBe("New Title");
     });
     it("should be able to save the file", () => {
+        const albumArt = AlbumArt.fromFile(path.join(__dirname, "__mock__", "Lenna.jpg"));
+        albumArt.type = AlbumArtType.Band;
+
         audio.title = "New Title";
+        audio.addAlbumArt(albumArt);
         audio.save(path.join(__dirname, "__mock__", "mock2.mp3"));
 
         const newAudio = Audio.fromFile(path.join(__dirname, "__mock__", "mock2.mp3"));
         expect(newAudio.title).toBe("New Title");
+        expect(newAudio.albumArts()).toHaveLength(3);
     });
 });
