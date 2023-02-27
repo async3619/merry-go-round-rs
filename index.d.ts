@@ -10,10 +10,18 @@ export class Audio {
   get artist(): string | null
   get album(): string | null
   get genre(): string | null
+  get year(): number | null
+  get track(): number | null
+  get disc(): number | null
+  get albumArtist(): string | null
   set title(title: string)
   set artist(artist: string)
   set album(album: string)
   set genre(genre: string)
+  set year(year: number)
+  set track(track: number)
+  set disc(disc: number)
+  set albumArtist(albumArtist: string)
   buffer(): Buffer
   save(path: string): void
 }

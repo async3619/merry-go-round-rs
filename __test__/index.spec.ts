@@ -12,7 +12,6 @@ describe("Audio", () => {
     it("should create an audio instance from a file", () => {
         expect(audio).toBeInstanceOf(Audio);
     });
-
     it("should create an audio instance from a buffer", () => {
         const buffer = fs.readFileSync(path.join(__dirname, "__mock__", "mock.mp3"));
         const newAudio = Audio.fromBuffer(buffer);
@@ -23,7 +22,6 @@ describe("Audio", () => {
     it("should throw an error if the file does not exist", () => {
         expect(() => Audio.fromFile("non-existent-file.mp3")).toThrow();
     });
-
     it("should throw an error if the buffer is not a valid audio file", () => {
         expect(() => Audio.fromBuffer(Buffer.from("invalid buffer"))).toThrow();
     });
@@ -31,37 +29,59 @@ describe("Audio", () => {
     it("should get the title", () => {
         expect(audio.title).toBe("Impact Moderato");
     });
-
     it("should get the artist", () => {
         expect(audio.artist).toBe("Kevin MacLeod");
     });
-
     it("should get the album", () => {
         expect(audio.album).toBe("YouTube Audio Library");
     });
-
     it("should get the genre", () => {
         expect(audio.genre).toBe("Cinematic");
+    });
+    it("should get the year", () => {
+        expect(audio.year).toBe(2015);
+    });
+    it("should get the track", () => {
+        expect(audio.track).toBe(1);
+    });
+    it("should get the disc", () => {
+        expect(audio.disc).toBe(1);
+    });
+    it("should get the album artist", () => {
+        expect(audio.albumArtist).toBe("Mocked Artist");
     });
 
     it("should set the title", () => {
         audio.title = "new title";
         expect(audio.title).toBe("new title");
     });
-
     it("should set the artist", () => {
         audio.artist = "new artist";
         expect(audio.artist).toBe("new artist");
     });
-
     it("should set the album", () => {
         audio.album = "new album";
         expect(audio.album).toBe("new album");
     });
-
     it("should set the genre", () => {
         audio.genre = "new genre";
         expect(audio.genre).toBe("new genre");
+    });
+    it("should set the year", () => {
+        audio.year = 2019;
+        expect(audio.year).toBe(2019);
+    });
+    it("should set the track", () => {
+        audio.track = 2;
+        expect(audio.track).toBe(2);
+    });
+    it("should set the disc", () => {
+        audio.disc = 2;
+        expect(audio.disc).toBe(2);
+    });
+    it("should set the album artist", () => {
+        audio.albumArtist = "new album artist";
+        expect(audio.albumArtist).toBe("new album artist");
     });
 
     it("should be able to save as buffer", () => {
@@ -71,7 +91,6 @@ describe("Audio", () => {
         const newAudio = Audio.fromBuffer(buffer);
         expect(newAudio.title).toBe("New Title");
     });
-
     it("should be able to save the file", () => {
         audio.title = "New Title";
         audio.save(path.join(__dirname, "__mock__", "mock2.mp3"));

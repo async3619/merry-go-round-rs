@@ -60,40 +60,66 @@ impl Audio {
     pub fn get_title(&self) -> Option<String> {
         self.tag.title().map(|s| s.to_string())
     }
-
     #[napi(getter)]
     pub fn get_artist(&self) -> Option<String> {
         self.tag.artist().map(|s| s.to_string())
     }
-
     #[napi(getter)]
     pub fn get_album(&self) -> Option<String> {
         self.tag.album().map(|s| s.to_string())
     }
-
     #[napi(getter)]
     pub fn get_genre(&self) -> Option<String> {
         self.tag.genre().map(|s| s.to_string())
+    }
+    #[napi(getter)]
+    pub fn get_year(&self) -> Option<i32> {
+        self.tag.year()
+    }
+    #[napi(getter)]
+    pub fn get_track(&self) -> Option<u32> {
+        self.tag.track()
+    }
+    #[napi(getter)]
+    pub fn get_disc(&self) -> Option<u32> {
+        self.tag.disc()
+    }
+    #[napi(getter)]
+    pub fn get_album_artist(&self) -> Option<String> {
+        self.tag.album_artist().map(|s| s.to_string())
     }
 
     #[napi(setter)]
     pub fn set_title(&mut self, title: String) {
         self.tag.set_title(title);
     }
-
     #[napi(setter)]
     pub fn set_artist(&mut self, artist: String) {
         self.tag.set_artist(artist);
     }
-
     #[napi(setter)]
     pub fn set_album(&mut self, album: String) {
         self.tag.set_album(album);
     }
-
     #[napi(setter)]
     pub fn set_genre(&mut self, genre: String) {
         self.tag.set_genre(genre);
+    }
+    #[napi(setter)]
+    pub fn set_year(&mut self, year: i32) {
+        self.tag.set_year(year);
+    }
+    #[napi(setter)]
+    pub fn set_track(&mut self, track: u32) {
+        self.tag.set_track(track);
+    }
+    #[napi(setter)]
+    pub fn set_disc(&mut self, disc: u32) {
+        self.tag.set_disc(disc);
+    }
+    #[napi(setter)]
+    pub fn set_album_artist(&mut self, album_artist: String) {
+        self.tag.set_album_artist(album_artist);
     }
 
     #[napi]
