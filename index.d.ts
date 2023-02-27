@@ -5,6 +5,7 @@
 
 export class Audio {
   static fromFile(path: string): Audio
+  static fromBuffer(buffer: Buffer): Audio
   get title(): string | null
   get artist(): string | null
   get album(): string | null
@@ -13,5 +14,6 @@ export class Audio {
   set artist(artist: string)
   set album(album: string)
   set genre(genre: string)
+  buffer(): Buffer
   save(path: string): void
 }

@@ -1,5 +1,6 @@
 import * as path from "path";
 import { Audio } from "..";
+import * as fs from "fs";
 
 describe("Audio", () => {
     let audio: Audio;
@@ -12,8 +13,19 @@ describe("Audio", () => {
         expect(audio).toBeInstanceOf(Audio);
     });
 
+    it("should create an audio instance from a buffer", () => {
+        const buffer = fs.readFileSync(path.join(__dirname, "__mock__", "mock.mp3"));
+        const newAudio = Audio.fromBuffer(buffer);
+
+        expect(newAudio).toBeInstanceOf(Audio);
+    });
+
     it("should throw an error if the file does not exist", () => {
         expect(() => Audio.fromFile("non-existent-file.mp3")).toThrow();
+    });
+
+    it("should throw an error if the buffer is not a valid audio file", () => {
+        expect(() => Audio.fromBuffer(Buffer.from("invalid buffer"))).toThrow();
     });
 
     it("should get the title", () => {
@@ -50,6 +62,14 @@ describe("Audio", () => {
     it("should set the genre", () => {
         audio.genre = "new genre";
         expect(audio.genre).toBe("new genre");
+    });
+
+    it("should be able to save as buffer", () => {
+        audio.title = "New Title";
+        const buffer = audio.buffer();
+
+        const newAudio = Audio.fromBuffer(buffer);
+        expect(newAudio.title).toBe("New Title");
     });
 
     it("should be able to save the file", () => {

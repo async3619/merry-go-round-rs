@@ -5,10 +5,11 @@ extern crate napi_derive;
 
 use std::fs;
 use std::fs::{OpenOptions};
-use std::io::Write;
+use std::io::{Cursor, Write};
 use std::path::Path;
 use id3::{Tag, TagLike, Version};
 use napi::{Error, Result};
+use napi::bindgen_prelude::Buffer;
 
 #[napi]
 pub struct Audio {
@@ -32,6 +33,22 @@ impl Audio {
 
         // read whole file into buffer
         let buffer = fs::read(path).map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?;
+
+        Ok(Self {
+            tag,
+            buffer,
+        })
+    }
+
+    #[napi(factory)]
+    pub fn from_buffer(buffer: Buffer) -> Result<Self> {
+        // convert JsBuffer to Vec<u8>
+        let buffer = buffer.to_vec();
+        let file = Cursor::new(buffer.clone());
+
+        // read id3 tag
+        let tag = Tag::read_from(file)
+            .map_err(|err| Error::from_reason(format!("Failed to read id3 tag: {}", err)))?;
 
         Ok(Self {
             tag,
@@ -77,6 +94,19 @@ impl Audio {
     #[napi(setter)]
     pub fn set_genre(&mut self, genre: String) {
         self.tag.set_genre(genre);
+    }
+
+    #[napi]
+    pub fn buffer(&self) -> Result<Buffer> {
+        let buffer = self.buffer.clone();
+        let mut file = Cursor::new(buffer);
+
+        // write id3 tag to file
+        self.tag.write_to(&mut file, Version::Id3v24)
+            .map_err(|err| Error::from_reason(format!("Failed to write id3 tag: {}", err)))?;
+
+        // convert file to JsBuffer
+        Ok(Buffer::from(file.into_inner()))
     }
 
     #[napi]
