@@ -246,6 +246,6 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { sum } = nativeBinding
+const { Audio } = nativeBinding
 
-module.exports.sum = sum
+module.exports.Audio = Audio

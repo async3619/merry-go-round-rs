@@ -197,3 +197,4 @@ Cargo.lock
 *.node
 
 /.idea
+/__test__/__mock__/mock2.mp3
