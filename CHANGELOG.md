@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/async3619/merry-go-round-rs/compare/v1.0.0...v1.1.0) (2023-03-03)
+
+
+### Features ✨
+
+* **core:** add musics path retrieving function ([3b5bd0c](https://github.com/async3619/merry-go-round-rs/commit/3b5bd0c5b454dd58679a373410ccea8943083566))
+
 ## 1.0.0 (2023-02-28)
 
 
