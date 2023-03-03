@@ -27,6 +27,7 @@ export const enum AlbumArtType {
   PublisherLogo = 20,
   Undefined = 21
 }
+export function getMusicsPath(): string | null
 export class AlbumArt {
   static fromBuffer(buffer: Buffer): AlbumArt
   static fromFile(path: string): AlbumArt

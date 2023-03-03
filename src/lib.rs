@@ -192,3 +192,11 @@ impl Audio {
         Ok(())
     }
 }
+
+#[napi]
+pub fn get_musics_path() -> Option<String> {
+    match dirs::audio_dir() {
+        Some(path) => Some(path.to_str().unwrap().to_string()),
+        None => None,
+    }
+}
