@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/async3619/merry-go-round-rs/compare/v1.1.0...v1.2.0) (2023-03-04)
+
+
+### Features ✨
+
+* **core:** now `Audio` object provides audio duration ([0461a42](https://github.com/async3619/merry-go-round-rs/commit/0461a42aa3a4114970b99a5e1219ae9d28f65e0c))
+
 ## [1.1.0](https://github.com/async3619/merry-go-round-rs/compare/v1.0.0...v1.1.0) (2023-03-03)
 
 
