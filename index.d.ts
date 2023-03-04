@@ -43,7 +43,7 @@ export class Audio {
   static fromBuffer(buffer: Buffer): Audio
   get title(): string | null
   get artist(): string | null
-  get artists(): Array<string> | null
+  get artists(): Array<string>
   get album(): string | null
   get genre(): string | null
   get year(): number | null
@@ -51,6 +51,9 @@ export class Audio {
   get disc(): number | null
   get albumArtist(): string | null
   get duration(): number
+  addArtist(artist: string): void
+  addArtists(artists: Array<string>): void
+  removeArtist(artist: string): void
   set title(title: string)
   set artist(artist: string)
   set artists(artists: Array<string>)

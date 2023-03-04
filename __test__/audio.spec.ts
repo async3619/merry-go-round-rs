@@ -99,6 +99,25 @@ describe("Audio", () => {
         expect(audio.albumArtist).toBe("new album artist");
     });
 
+    it("should add an artist", () => {
+        audio.addArtist("new artist");
+        expect(audio.artists).toHaveLength(2);
+        expect(audio.artists).toEqual(["Kevin MacLeod", "new artist"]);
+    });
+    it("should add multiple artists", () => {
+        audio.addArtists(["new artist", "new artist 2"]);
+        expect(audio.artists).toHaveLength(3);
+        expect(audio.artists).toEqual(["Kevin MacLeod", "new artist", "new artist 2"]);
+    });
+    it("should remove an artist", () => {
+        audio.removeArtist("Kevin MacLeod");
+        expect(audio.artists).toHaveLength(0);
+    });
+    it("should do nothing when removing artist if the artist does not exist", () => {
+        audio.removeArtist("non-existent-artist");
+        expect(audio.artists).toHaveLength(1);
+    });
+
     it("should add an album art", () => {
         const albumArt = AlbumArt.fromFile(path.join(__dirname, "__mock__", "Lenna.jpg"));
         albumArt.type = AlbumArtType.Band;

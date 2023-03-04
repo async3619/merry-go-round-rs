@@ -86,8 +86,14 @@ impl Audio {
         self.tag.artist().map(|s| s.to_string())
     }
     #[napi(getter)]
-    pub fn get_artists(&self) -> Option<Vec<String>> {
-        self.tag.artists().map(|s| s.iter().map(|s| s.to_string()).collect::<Vec<_>>())
+    pub fn get_artists(&self) -> Vec<String> {
+        let mut artists = match self.tag.artists() {
+            Some(artists) => artists.to_vec().iter().map(|s| s.to_string()).collect(),
+            None => vec![],
+        };
+
+        artists.retain(|s| !s.is_empty());
+        artists
     }
     #[napi(getter)]
     pub fn get_album(&self) -> Option<String> {
@@ -116,6 +122,42 @@ impl Audio {
     #[napi(getter)]
     pub fn get_duration(&self) -> u32 {
         self.properties.duration().as_secs() as u32
+    }
+
+    #[napi]
+    pub fn add_artist(&mut self, artist: String) {
+        let artists = self.tag.artists();
+        let artist = artist.to_owned();
+        if let Some(artists) = artists {
+            let mut artists = artists.to_vec();
+            artists.push(&artist);
+
+            self.tag.set_artist(artists.join("\0"));
+        } else {
+            self.tag.set_artist(artist);
+        }
+    }
+    #[napi]
+    pub fn add_artists(&mut self, artists: Vec<String>) {
+        let origin = match self.tag.artists() {
+            Some(artists) => artists.to_vec(),
+            None => vec![],
+        };
+
+        let mut new_artists = origin.clone();
+        new_artists.extend(artists.iter().map(|s| s.as_str()));
+
+        self.tag.set_artist(new_artists.join("\0"));
+    }
+    #[napi]
+    pub fn remove_artist(&mut self, artist: String) {
+        let artists = self.tag.artists();
+        if let Some(artists) = artists {
+            let mut artists = artists.to_vec();
+            artists.retain(|s| s != &artist);
+
+            self.tag.set_artist(artists.join("\0"));
+        }
     }
 
     #[napi(setter)]
