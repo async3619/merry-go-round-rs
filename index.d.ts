@@ -43,6 +43,7 @@ export class Audio {
   static fromBuffer(buffer: Buffer): Audio
   get title(): string | null
   get artist(): string | null
+  get artists(): Array<string> | null
   get album(): string | null
   get genre(): string | null
   get year(): number | null
