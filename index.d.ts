@@ -49,6 +49,7 @@ export class Audio {
   get track(): number | null
   get disc(): number | null
   get albumArtist(): string | null
+  get duration(): number
   set title(title: string)
   set artist(artist: string)
   set album(album: string)

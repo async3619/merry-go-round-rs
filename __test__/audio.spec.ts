@@ -53,6 +53,9 @@ describe("Audio", () => {
     it("should get the album arts", () => {
         expect(audio.albumArts()).toHaveLength(2);
     });
+    it("should get the duration in seconds", () => {
+        expect(audio.duration).toBe(27);
+    });
 
     it("should set the title", () => {
         audio.title = "new title";

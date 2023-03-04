@@ -12,6 +12,7 @@ use id3::frame::Picture;
 use napi::{Error, Result, bindgen_prelude::*};
 use crate::album_art::AlbumArt;
 use crate::album_art_type::AlbumArtType;
+use lofty::{AudioFile, Probe};
 
 mod album_art;
 mod album_art_type;
@@ -19,6 +20,7 @@ mod album_art_type;
 #[napi]
 pub struct Audio {
     tag: Tag,
+    properties: lofty::FileProperties,
     buffer: Vec<u8>,
 }
 
@@ -39,8 +41,14 @@ impl Audio {
         // read whole file into buffer
         let buffer = fs::read(path).map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?;
 
+        let tagged_file = Probe::open(path)
+            .map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?
+            .read()
+            .map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?;
+
         Ok(Self {
             tag,
+            properties: tagged_file.properties().to_owned(),
             buffer,
         })
     }
@@ -48,14 +56,23 @@ impl Audio {
     pub fn from_buffer(buffer: Buffer) -> Result<Self> {
         // convert JsBuffer to Vec<u8>
         let buffer = buffer.to_vec();
-        let file = Cursor::new(buffer.clone());
+        let mut file = Cursor::new(buffer.clone());
 
         // read id3 tag
-        let tag = Tag::read_from(file)
+        let tag = Tag::read_from(&mut file)
             .map_err(|err| Error::from_reason(format!("Failed to read id3 tag: {}", err)))?;
+
+        file.set_position(0);
+
+        let tagged_file = Probe::new(&mut file)
+            .guess_file_type()
+            .map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?
+            .read()
+            .map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?;
 
         Ok(Self {
             tag,
+            properties: tagged_file.properties().to_owned(),
             buffer,
         })
     }
@@ -91,6 +108,10 @@ impl Audio {
     #[napi(getter)]
     pub fn get_album_artist(&self) -> Option<String> {
         self.tag.album_artist().map(|s| s.to_string())
+    }
+    #[napi(getter)]
+    pub fn get_duration(&self) -> u32 {
+        self.properties.duration().as_secs() as u32
     }
 
     #[napi(setter)]
