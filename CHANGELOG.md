@@ -1,3 +1,11 @@
+## [1.3.0](https://github.com/async3619/merry-go-round-rs/compare/v1.2.0...v1.3.0) (2023-03-04)
+
+
+### Features ✨
+
+* **tag:** add artists field ([3f78331](https://github.com/async3619/merry-go-round-rs/commit/3f783317198da259b30c09c62a7d99d9d9ec4088))
+* **tag:** add artists manipulation methods ([80dc363](https://github.com/async3619/merry-go-round-rs/commit/80dc363d7d94fadedea0d731a77ebe0c582a629b))
+
 ## [1.2.0](https://github.com/async3619/merry-go-round-rs/compare/v1.1.0...v1.2.0) (2023-03-04)
 
 
