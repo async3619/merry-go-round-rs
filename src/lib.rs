@@ -86,6 +86,10 @@ impl Audio {
         self.tag.artist().map(|s| s.to_string())
     }
     #[napi(getter)]
+    pub fn get_artists(&self) -> Option<Vec<String>> {
+        self.tag.artists().map(|s| s.iter().map(|s| s.to_string()).collect::<Vec<_>>())
+    }
+    #[napi(getter)]
     pub fn get_album(&self) -> Option<String> {
         self.tag.album().map(|s| s.to_string())
     }
@@ -121,6 +125,10 @@ impl Audio {
     #[napi(setter)]
     pub fn set_artist(&mut self, artist: String) {
         self.tag.set_artist(artist);
+    }
+    #[napi(setter)]
+    pub fn set_artists(&mut self, artists: Vec<String>) {
+        self.tag.set_artist(artists.join("\0"));
     }
     #[napi(setter)]
     pub fn set_album(&mut self, album: String) {

@@ -1,6 +1,7 @@
 import * as path from "path";
 import { AlbumArt, AlbumArtType, Audio } from "..";
 import * as fs from "fs";
+import exp from "constants";
 
 describe("Audio", () => {
     let audio: Audio;
@@ -31,6 +32,9 @@ describe("Audio", () => {
     });
     it("should get the artist", () => {
         expect(audio.artist).toBe("Kevin MacLeod");
+    });
+    it("should get the artists", () => {
+        expect(audio.artists).toHaveLength(1);
     });
     it("should get the album", () => {
         expect(audio.album).toBe("YouTube Audio Library");
@@ -64,6 +68,11 @@ describe("Audio", () => {
     it("should set the artist", () => {
         audio.artist = "new artist";
         expect(audio.artist).toBe("new artist");
+    });
+    it("should set the artists", () => {
+        audio.artists = ["new artist", "new artist 2"];
+        expect(audio.artists).toHaveLength(2);
+        expect(audio.artists).toEqual(["new artist", "new artist 2"]);
     });
     it("should set the album", () => {
         audio.album = "new album";

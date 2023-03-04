@@ -53,6 +53,7 @@ export class Audio {
   get duration(): number
   set title(title: string)
   set artist(artist: string)
+  set artists(artists: Array<string>)
   set album(album: string)
   set genre(genre: string)
   set year(year: number)
