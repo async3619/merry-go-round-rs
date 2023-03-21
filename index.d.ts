@@ -66,6 +66,7 @@ export class Audio {
   albumArts(): Array<AlbumArt>
   addAlbumArt(albumArt: AlbumArt): void
   removeAlbumArt(albumArtType: AlbumArtType): void
+  clearAlbumArts(): void
   buffer(): Buffer
   save(path: string): void
 }

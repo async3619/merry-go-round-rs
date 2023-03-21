@@ -132,6 +132,11 @@ describe("Audio", () => {
 
         expect(audio.albumArts()).toHaveLength(1);
     });
+    it("should clear all album arts", () => {
+        audio.clearAlbumArts();
+
+        expect(audio.albumArts()).toHaveLength(0);
+    });
 
     it("should be able to save as buffer", () => {
         const albumArt = AlbumArt.fromFile(path.join(__dirname, "__mock__", "Lenna.jpg"));

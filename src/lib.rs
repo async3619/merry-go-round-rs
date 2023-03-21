@@ -214,6 +214,10 @@ impl Audio {
     pub fn remove_album_art(&mut self, album_art_type: AlbumArtType) {
         self.tag.remove_picture_by_type(album_art_type.into());
     }
+    #[napi]
+    pub fn clear_album_arts(&mut self) {
+        self.tag.remove_all_pictures();
+    }
 
     #[napi]
     pub fn buffer(&self) -> Result<Buffer> {
