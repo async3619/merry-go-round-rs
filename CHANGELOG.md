@@ -1,3 +1,10 @@
+## [1.4.0](https://github.com/async3619/merry-go-round-rs/compare/v1.3.0...v1.4.0) (2023-03-22)
+
+
+### Features ✨
+
+* **tag:** add clearing album arts feature ([f6ffc05](https://github.com/async3619/merry-go-round-rs/commit/f6ffc0567b6b9d622736502ce4e4608889efb9b4))
+
 ## [1.3.0](https://github.com/async3619/merry-go-round-rs/compare/v1.2.0...v1.3.0) (2023-03-04)
 
 
