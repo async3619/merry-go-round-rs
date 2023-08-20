@@ -121,8 +121,8 @@ impl Audio {
         self.tag.album_artist().map(|s| s.to_string())
     }
     #[napi(getter)]
-    pub fn get_duration(&self) -> u32 {
-        self.properties.duration().as_secs() as u32
+    pub fn get_duration(&self) -> u128 {
+        self.properties.duration().as_millis()
     }
 
     #[napi]

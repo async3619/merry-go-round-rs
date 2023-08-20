@@ -54,7 +54,7 @@ export class Audio {
   get track(): number | null
   get disc(): number | null
   get albumArtist(): string | null
-  get duration(): number
+  get duration(): bigint
   addArtist(artist: string): void
   addArtists(artists: Array<string>): void
   removeArtist(artist: string): void
