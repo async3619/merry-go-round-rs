@@ -3,8 +3,7 @@
 #[macro_use]
 extern crate napi_derive;
 
-use std::fs;
-use std::fs::{OpenOptions};
+use std::fs::{read, remove_file, OpenOptions};
 use std::io::{Cursor, Write};
 use std::path::Path;
 use id3::{Tag, TagLike, Version};
@@ -13,6 +12,8 @@ use napi::{Error, Result, bindgen_prelude::*};
 use crate::album_art::AlbumArt;
 use crate::album_art_type::AlbumArtType;
 use lofty::{AudioFile, Probe};
+use futures::prelude::*;
+use tokio::fs;
 
 mod album_art;
 mod album_art_type;
@@ -39,7 +40,7 @@ impl Audio {
         let tag = Tag::read_from_path(path).map_err(|err| Error::from_reason(format!("Failed to read id3 tag: {}", err)))?;
 
         // read whole file into buffer
-        let buffer = fs::read(path).map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?;
+        let buffer = read(path).map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?;
 
         let tagged_file = Probe::open(path)
             .map_err(|err| Error::from_reason(format!("Failed to read file: {}", err)))?
@@ -244,7 +245,7 @@ impl Audio {
         match path.try_exists() {
             Ok(exists) => {
                 if exists {
-                    fs::remove_file(path)
+                    remove_file(path)
                         .map_err(|err| Error::from_reason(format!("Failed to delete file: {}", err)))?;
                 }
             }
@@ -274,4 +275,24 @@ pub fn get_musics_path() -> Option<String> {
         Some(path) => Some(path.to_str().unwrap().to_string()),
         None => None,
     }
+}
+
+#[napi]
+async fn load_audio_from_file(path: String) -> Result<Audio> {
+    let buffer = fs::read(path)
+        .map(|r| match r {
+            Ok(content) => Ok(content.into()),
+            Err(e) => Err(Error::new(
+                Status::GenericFailure,
+                format!("failed to read file, {}", e),
+            )),
+        })
+        .await;
+
+    let buffer = match buffer {
+        Ok(buffer) => buffer,
+        Err(e) => return Err(e),
+    };
+
+    return Audio::from_buffer(buffer);
 }
