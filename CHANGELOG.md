@@ -1,3 +1,10 @@
+## [1.5.0-dev.2](https://github.com/async3619/merry-go-round-rs/compare/v1.5.0-dev.1...v1.5.0-dev.2) (2023-08-20)
+
+
+### Bug Fixes 🐞
+
+* now audio file duration retrieved as milliseconds ([#4](https://github.com/async3619/merry-go-round-rs/issues/4)) ([cfc869a](https://github.com/async3619/merry-go-round-rs/commit/cfc869aa0779e41b27093f4e18333e4235f3084e))
+
 ## [1.5.0-dev.1](https://github.com/async3619/merry-go-round-rs/compare/v1.4.0...v1.5.0-dev.1) (2023-08-20)
 
 
