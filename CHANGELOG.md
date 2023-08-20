@@ -1,3 +1,10 @@
+## [1.5.0-dev.1](https://github.com/async3619/merry-go-round-rs/compare/v1.4.0...v1.5.0-dev.1) (2023-08-20)
+
+
+### Features ✨
+
+* implement asynchronous version of load function ([#2](https://github.com/async3619/merry-go-round-rs/issues/2)) ([a575500](https://github.com/async3619/merry-go-round-rs/commit/a5755001e89081c42072090bb925337fa9d486a4))
+
 ## [1.4.0](https://github.com/async3619/merry-go-round-rs/compare/v1.3.0...v1.4.0) (2023-03-22)
 
 
