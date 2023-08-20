@@ -246,9 +246,13 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { AlbumArt, AlbumArtType, Audio, getMusicsPath } = nativeBinding
+const { AlbumArt, loadAlbumArtFromFileSync, loadAlbumArtFromFile, AlbumArtType, Audio, getMusicsPath, loadAudioFromFileSync, loadAudioFromFile } = nativeBinding
 
 module.exports.AlbumArt = AlbumArt
+module.exports.loadAlbumArtFromFileSync = loadAlbumArtFromFileSync
+module.exports.loadAlbumArtFromFile = loadAlbumArtFromFile
 module.exports.AlbumArtType = AlbumArtType
 module.exports.Audio = Audio
 module.exports.getMusicsPath = getMusicsPath
+module.exports.loadAudioFromFileSync = loadAudioFromFileSync
+module.exports.loadAudioFromFile = loadAudioFromFile

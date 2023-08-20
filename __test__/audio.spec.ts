@@ -1,7 +1,6 @@
-import * as path from "path";
-import { AlbumArt, AlbumArtType, Audio } from "..";
 import * as fs from "fs";
-import exp from "constants";
+import * as path from "path";
+import { AlbumArt, AlbumArtType, Audio, loadAudioFromFile, loadAudioFromFileSync } from "..";
 
 describe("Audio", () => {
     let audio: Audio;
@@ -161,5 +160,30 @@ describe("Audio", () => {
         const newAudio = Audio.fromFile(path.join(__dirname, "__mock__", "mock2.mp3"));
         expect(newAudio.title).toBe("New Title");
         expect(newAudio.albumArts()).toHaveLength(3);
+    });
+});
+
+describe("loadAudioFromFile()", () => {
+    it("should load audio from file asynchronously", async () => {
+        const audioPromise = loadAudioFromFile(path.join(__dirname, "__mock__", "mock.mp3"));
+
+        await expect(audioPromise).resolves.toBeInstanceOf(Audio);
+    });
+
+    it("should throw an error if the file does not exist", async () => {
+        const audioPromise = loadAudioFromFile("non-existent-file.mp3");
+
+        await expect(audioPromise).rejects.toThrow();
+    });
+});
+
+describe("loadAudioFromFileSync()", () => {
+    it("should load audio from file synchronously", () => {
+        const audio = loadAudioFromFileSync(path.join(__dirname, "__mock__", "mock.mp3"));
+        expect(audio).toBeInstanceOf(Audio);
+    });
+
+    it("should throw an error if the file does not exist", () => {
+        expect(() => loadAudioFromFileSync("non-existent-file.mp3")).toThrow();
     });
 });

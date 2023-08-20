@@ -1,6 +1,6 @@
 import path from "path";
 
-import { AlbumArt, AlbumArtType, Audio } from "../index";
+import { AlbumArt, AlbumArtType, Audio, loadAlbumArtFromFile, loadAlbumArtFromFileSync } from "../index";
 import * as fs from "fs";
 
 describe("AlbumArt", () => {
@@ -59,5 +59,28 @@ describe("AlbumArt", () => {
 
         expect(Buffer.compare(audio.albumArts()[0].data(), lennaPng)).toBe(0);
         expect(Buffer.compare(audio.albumArts()[1].data(), lennaJpg)).toBe(0);
+    });
+});
+
+describe("loadAlbumArtFromFileSync()", () => {
+    it("should load an album art from a file synchronously", () => {
+        const target = loadAlbumArtFromFileSync(path.join(__dirname, "__mock__", "Lenna.png"));
+        expect(target).toBeInstanceOf(AlbumArt);
+    });
+
+    it("should throw an error if the file does not exist", () => {
+        expect(() => loadAlbumArtFromFileSync("non-existent-file.png")).toThrow();
+    });
+});
+
+describe("loadAlbumArtFromFile()", () => {
+    it("should load an album art from a file asynchronously", async () => {
+        const promise = loadAlbumArtFromFile(path.join(__dirname, "__mock__", "Lenna.png"));
+        await expect(promise).resolves.toBeInstanceOf(AlbumArt);
+    });
+
+    it("should throw an error if the file does not exist", async () => {
+        const target = loadAlbumArtFromFile("non-existent-file.png");
+        await expect(target).rejects.toThrow();
     });
 });
