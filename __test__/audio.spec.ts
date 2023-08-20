@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { AlbumArt, AlbumArtType, Audio, loadAudioFromFile } from "..";
+import { AlbumArt, AlbumArtType, Audio, loadAudioFromFile, loadAudioFromFileSync } from "..";
 
 describe("Audio", () => {
     let audio: Audio;
@@ -163,7 +163,7 @@ describe("Audio", () => {
     });
 });
 
-describe("loadAudioFromFile", () => {
+describe("loadAudioFromFile()", () => {
     it("should load audio from file asynchronously", async () => {
         const audioPromise = loadAudioFromFile(path.join(__dirname, "__mock__", "mock.mp3"));
 
@@ -174,5 +174,16 @@ describe("loadAudioFromFile", () => {
         const audioPromise = loadAudioFromFile("non-existent-file.mp3");
 
         await expect(audioPromise).rejects.toThrow();
+    });
+});
+
+describe("loadAudioFromFileSync()", () => {
+    it("should load audio from file synchronously", () => {
+        const audio = loadAudioFromFileSync(path.join(__dirname, "__mock__", "mock.mp3"));
+        expect(audio).toBeInstanceOf(Audio);
+    });
+
+    it("should throw an error if the file does not exist", () => {
+        expect(() => loadAudioFromFileSync("non-existent-file.mp3")).toThrow();
     });
 });

@@ -28,6 +28,7 @@ export const enum AlbumArtType {
   Undefined = 21
 }
 export function getMusicsPath(): string | null
+export function loadAudioFromFileSync(path: string): Audio
 export function loadAudioFromFile(path: string): Promise<Audio>
 export class AlbumArt {
   static fromBuffer(buffer: Buffer): AlbumArt

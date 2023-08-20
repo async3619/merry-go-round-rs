@@ -278,6 +278,11 @@ pub fn get_musics_path() -> Option<String> {
 }
 
 #[napi]
+fn load_audio_from_file_sync(path: String) -> Result<Audio> {
+    Audio::from_file(path)
+}
+
+#[napi]
 async fn load_audio_from_file(path: String) -> Result<Audio> {
     let buffer = fs::read(path)
         .map(|r| match r {
