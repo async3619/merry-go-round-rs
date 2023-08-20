@@ -6,6 +6,8 @@ use id3::{Frame};
 use id3::frame::{Picture};
 use napi::{Error, Result, bindgen_prelude::*};
 use crate::album_art_type::AlbumArtType;
+use futures::prelude::*;
+use tokio::fs;
 
 fn create_album_art(buffer: &Vec<u8>) -> Result<AlbumArt> {
     let vec = buffer.to_vec();
@@ -103,4 +105,29 @@ impl AlbumArt {
     pub fn data(&self) -> Buffer {
         self.picture.data.clone().into()
     }
+}
+
+#[napi]
+fn load_album_art_from_file_sync(path: String) -> Result<AlbumArt> {
+    AlbumArt::from_file(path)
+}
+
+#[napi]
+async fn load_album_art_from_file(path: String) -> Result<AlbumArt> {
+    let buffer = fs::read(path)
+        .map(|r| match r {
+            Ok(content) => Ok(content.into()),
+            Err(e) => Err(Error::new(
+                Status::GenericFailure,
+                format!("failed to read file, {}", e),
+            )),
+        })
+        .await;
+
+    let buffer = match buffer {
+        Ok(buffer) => buffer,
+        Err(e) => return Err(e),
+    };
+
+    return AlbumArt::from_buffer(buffer);
 }
